@@ -30,20 +30,20 @@ class LianjiaSpider(scrapy.Spider):
 #            link = district.xpath('@href').extract()
             district_url = 'http://sh.lianjia.com' + district
 #            print(district_url)
-            yield scrapy.Request(district_url, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]},  callback = self.parse_regions)
+            yield scrapy.Request(district_url,  callback = self.parse_regions)
 
     def parse_regions(self, response):
         for region in response.xpath('.//*[@id="filter-options"]/dl[1]/dd/div[2]/a[position()>1]/@href').extract():
             region_url = 'http://sh.lianjia.com' + region
 #            print(region_url, last_page)
-            yield scrapy.Request(region_url, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]},  callback = self.parse_houselist)
+            yield scrapy.Request(region_url,  callback = self.parse_houselist)
 
     def parse_houselist(self, response):
         print(response.url)
         total_page = response.xpath('/html/body/div[3]/div[3]/div/div[3]/a[last() - 1]/text()').extract_first(default = '1')
         for page in range(1, int(total_page) + 1):
             houselist_url = response.url + 'd' + str(page)
-            yield scrapy.Request(houselist_url, meta = {'dont_redirect': True,'handle_httpstatus_list': [302]},  callback = self.parse_houseitem)
+            yield scrapy.Request(houselist_url,  callback = self.parse_houseitem)
 
 
     def parse_houseitem(self, response):

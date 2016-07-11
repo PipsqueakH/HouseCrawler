@@ -14,10 +14,10 @@ class LianjiaSpider(scrapy.Spider):
 #    logfile = name + datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
 
     pipeline = set([
-#        MongoPipeline,
+        MongoPipeline,
 #        JsonWriterPipeline,
     ])
-
+    handle_httpstatus_list = [301, 302]
 
     @classmethod
     def from_crawler(cls, crawler):
